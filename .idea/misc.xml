@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/font/lato.xml" value="0.20101351351351351" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_pdf_view.xml" value="0.18141891891891893" />
+        <entry key="app/src/main/res/layout/fragment__msword.xml" value="0.18141891891891893" />
         <entry key="app/src/main/res/layout/fragment_pdf.xml" value="0.18141891891891893" />
         <entry key="app/src/main/res/layout/pdf_itemview.xml" value="0.22" />
       </map>

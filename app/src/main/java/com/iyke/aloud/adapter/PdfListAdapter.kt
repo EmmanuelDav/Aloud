@@ -1,12 +1,25 @@
 package com.iyke.aloud.adapter
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.iyke.aloud.databinding.PdfItemviewBinding
 import com.iyke.aloud.model.PdfFile
 
 
-class PdfListAdapter(private val list: ArrayList<PdfFile>) : RecyclerView.Adapter<PdfListAdapter.PdfViewHolder>() {
+class PdfListAdapter( val onClickListener: OnClickListener) : ListAdapter<PdfFile,PdfListAdapter.PdfViewHolder>(MyDiffUtil) {
+
+    companion object MyDiffUtil : DiffUtil.ItemCallback<PdfFile>() {
+        override fun areItemsTheSame(oldItem: PdfFile, newItem: PdfFile): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: PdfFile, newItem: PdfFile): Boolean {
+            return oldItem.name == newItem.name
+        }
+    }
 
     class PdfViewHolder(val view: PdfItemviewBinding) :RecyclerView.ViewHolder(view.root) {
         fun bind(item: PdfFile) {
@@ -24,7 +37,15 @@ class PdfListAdapter(private val list: ArrayList<PdfFile>) : RecyclerView.Adapte
         return PdfViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PdfViewHolder, position: Int) = holder.bind(list[position])
+    override fun onBindViewHolder(holder: PdfViewHolder, position: Int) {
+        val meme = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(meme)
+        }
+        holder.bind(meme)
+    }
 
-    override fun getItemCount(): Int = list.size
+    class OnClickListener(val clickListener: (meme: PdfFile) -> Unit) {
+        fun onClick(meme: PdfFile) = clickListener(meme)
+    }
 }

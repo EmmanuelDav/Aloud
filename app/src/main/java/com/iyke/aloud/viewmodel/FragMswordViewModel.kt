@@ -20,9 +20,12 @@ import com.iyke.aloud.model.PdfFile
 class FragMswordViewModel(application: Application) : AndroidViewModel(application) {
 
     val context = getApplication<Application>().applicationContext
-    private var REQUEST_PERMISSIONS = 1
-    private var permission = false
+
     var TAG = "FragMswordViewModel"
+    companion object{
+         var REQUEST_PERMISSIONS = 1
+         var permission = false
+    }
     private var pdfArrayList: MutableLiveData<List<PdfFile>>? = null
 
 
@@ -75,7 +78,7 @@ class FragMswordViewModel(application: Application) : AndroidViewModel(applicati
         pdfArrayList!!.value = pdfList
     }
 
-    private fun isPermissionAvailable() {
+     fun isPermissionAvailable() {
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.READ_EXTERNAL_STORAGE
