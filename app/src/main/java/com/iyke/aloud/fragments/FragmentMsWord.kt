@@ -1,5 +1,6 @@
 package com.iyke.aloud.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,5 +20,13 @@ class FragmentMsWord : Fragment() {
     ): View {
         _binding = FragmentMswordBinding.inflate(inflater, container, false)
         val view = binding.root
-        return view    }
+        return view
+
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
