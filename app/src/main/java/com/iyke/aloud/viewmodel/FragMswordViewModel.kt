@@ -1,97 +1,80 @@
 package com.iyke.aloud.viewmodel
 
 import android.Manifest
-import android.app.Activity
 import android.app.Application
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
-import android.webkit.MimeTypeMap
+import android.os.Environment
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.iyke.aloud.model.PdfFile
+import java.io.File
 
 
 class FragMswordViewModel(application: Application) : AndroidViewModel(application) {
 
-    val context = getApplication<Application>().applicationContext
+    var dir: File = File(Environment.getExternalStorageDirectory().toString())
 
-    var TAG = "FragMswordViewModel"
     companion object{
          var REQUEST_PERMISSIONS = 1
          var permission = false
     }
-    private var pdfArrayList: MutableLiveData<List<PdfFile>>? = null
+    private var pdfArrayList: MutableLiveData<ArrayList<PdfFile>>? = null
 
 
-    fun getPdfFiles(): MutableLiveData<List<PdfFile>>? {
+    fun getPdfFiles(): MutableLiveData<ArrayList<PdfFile>>? {
         if (pdfArrayList == null) {
-            pdfArrayList = MutableLiveData<List<PdfFile>>()
-            getPdfList()
+            pdfArrayList = MutableLiveData<ArrayList<PdfFile>>()
         }
+        getPdfList(dir)
         return pdfArrayList
     }
 
+    private fun getPdfList(dir: File) {
+        val fileList: ArrayList<PdfFile> = ArrayList()
 
-    private fun getPdfList() {
-        val pdfList: ArrayList<PdfFile> = ArrayList()
-
-        val projection = arrayOf(
-            MediaStore.Files.FileColumns.DISPLAY_NAME,
-            MediaStore.Files.FileColumns.DATE_ADDED,
-            MediaStore.Files.FileColumns.DATA,
-            MediaStore.Files.FileColumns.MIME_TYPE
-        )
-        val sortOrder = MediaStore.Files.FileColumns.DATE_ADDED + " DESC"
-        val selection = MediaStore.Files.FileColumns.MIME_TYPE + " = ?"
-        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf")
-        val selectionArgs = arrayOf(mimeType)
-        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
-        } else {
-            MediaStore.Files.getContentUri("external")
-        }
-
-        context.contentResolver.query(collection, projection, selection, selectionArgs, sortOrder)
-            .use { cursor ->
-                assert(cursor != null)
-                if (cursor!!.moveToFirst()) {
-                    val columnData: String =
-                        cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA).toString()
-                    val columnName: String =
-                        cursor.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME).toString()
-                    val columnDate: String =
-                        cursor.getColumnIndex(MediaStore.Files.FileColumns.DATE_ADDED).toString()
-                    val columnSize: String =
-                        cursor.getColumnIndex(MediaStore.Files.FileColumns.SIZE).toString()
-                    do {
-                        pdfList.add(PdfFile(columnName, columnSize, columnDate, "", columnData))
-                        //you can get your pdf files
-                    } while (cursor.moveToNext())
+        val listFile = dir.listFiles()
+        if (listFile != null && listFile.isNotEmpty()) {
+            for (i in listFile.indices) {
+                if (listFile[i].isDirectory) {
+                    getPdfList(listFile[i])
+                } else {
+                    var booleanpdf = false
+                    if (listFile[i].name.endsWith(".pdf")) {
+                        for (j in fileList.indices) {
+                            if (fileList[j].files.name == listFile[i].name) {
+                                booleanpdf = true
+                            } else {
+                            }
+                        }
+                        if (booleanpdf) {
+                            booleanpdf = false
+                        } else {
+                            fileList.add(PdfFile(listFile[i]))
+                        }
+                    }
                 }
             }
-        pdfArrayList!!.value = pdfList
+        }
+        pdfArrayList!!.value = fileList
     }
 
-     fun isPermissionAvailable() {
+     fun isPermissionAvailable(fragment : Fragment) {
         if (ContextCompat.checkSelfPermission(
-                context,
+                fragment.requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    context as Activity,
+                    fragment.requireActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 )
             ) {
             } else {
                 ActivityCompat.requestPermissions(
-                    context, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    fragment.requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     REQUEST_PERMISSIONS
                 )
             }

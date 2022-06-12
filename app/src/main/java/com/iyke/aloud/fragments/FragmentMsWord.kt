@@ -39,7 +39,7 @@ class FragmentMsWord : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.isPermissionAvailable()
+        viewModel.isPermissionAvailable(this)
     }
 
     override fun onRequestPermissionsResult(
@@ -62,7 +62,7 @@ class FragmentMsWord : Fragment() {
 
         rvAdapter = PdfListAdapter(PdfListAdapter.OnClickListener {
             val intent = Intent(context, PdfViewActivity::class.java)
-            intent.putExtra("position", it.Data)
+            intent.putExtra("position", it.files.name)
             startActivity(intent)
         })
 

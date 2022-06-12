@@ -42,7 +42,7 @@
                 android:layout_toRightOf="@+id/ivPdf"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{file.name}"
+                android:text="@{file.files.name}"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivPdf"
@@ -54,7 +54,6 @@
                 android:id="@+id/fileDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{file.date}"
                 android:layout_below="@+id/tvPdfName"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
@@ -68,7 +67,6 @@
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/fileDate"
-                android:text="@{file.size}"
                 />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

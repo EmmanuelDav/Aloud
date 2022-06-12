@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.iyke.aloud.fragments.FragmentMsWord
 import com.iyke.aloud.fragments.FragmentPdf
 
-private const val NUM_TABS = 3
+private const val NUM_TABS = 2
 
  class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

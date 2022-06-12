@@ -1,5 +1,4 @@
 package com.iyke.aloud.adapter
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,7 +16,7 @@ class PdfListAdapter( val onClickListener: OnClickListener) : ListAdapter<PdfFil
         }
 
         override fun areContentsTheSame(oldItem: PdfFile, newItem: PdfFile): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.files == newItem.files
         }
     }
 
