@@ -29,6 +29,7 @@ class FragMswordViewModel(application: Application) : AndroidViewModel(applicati
             pdfArrayList = MutableLiveData<ArrayList<PdfFile>>()
         }
         getPdfList(dir)
+
         return pdfArrayList
     }
 
