@@ -30,6 +30,7 @@ class FragMswordViewModel(application: Application) : AndroidViewModel(applicati
         }
         getPdfList(dir)
 
+
         return pdfArrayList
     }
 

@@ -40,6 +40,7 @@ class FragmentMsWord : Fragment() {
     override fun onStart() {
         super.onStart()
 
+
         viewModel.isPermissionAvailable(this)
     }
 
